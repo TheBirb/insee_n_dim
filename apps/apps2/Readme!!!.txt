@@ -1,0 +1,4 @@
+-Las trazas son de tipo butterfly
+-El paquete de apps 1 esta creado minimizando los conflictos
+-El paquete de apps 2 esta creado equilibrando los conflictos
+-El paquete de apps 3 esta creado con muchos conflictos
