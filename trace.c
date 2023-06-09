@@ -943,7 +943,7 @@ void file_placement() {
 */
 void apx_placement(){
     FILE *fp;
-    char *buffer[2048];
+    char *buffer[NUMNODES*6];
     char *name;
     long *nodelist;
     long n_nodes;
@@ -953,7 +953,7 @@ void apx_placement(){
     if((fp = fopen(mpa_file, "r"))==NULL) {
         panic("appmix: appmix_file not found!");
     }
-    while(fgets(buffer, 2048, fp)!=NULL){
+    while(fgets(buffer,NUMNODES*8, fp)!=NULL){
         if(buffer[0]!='\n' && buffer[0] != '#'){
             if(buffer[strlen(buffer)-1] =='\n')
                 buffer[strlen(buffer)-1] = '\0';
@@ -982,6 +982,7 @@ void apx_traces(){
     char *tracefile;
     long source, dest;
     long i;
+    int j;
     while(actual != NULL){
         if(actual->running==0){
             if(check_node_disp(actual->node_list, actual->nodes)==1){
@@ -989,10 +990,14 @@ void apx_traces(){
             }
             actual->running=1;
             tracefile = actual->filename;
-            if((fd = fopen(tracefile, "r")) == NULL){
+            if((fd = fopen(tracefile, "r")) == NULL) {
                 char message[100];
-                sprintf(message, "Trace file not found in current directory - %s",tracefile);
+                sprintf(message, "Trace file not found in current directory - %s", tracefile);
                 panic(message);
+            }
+            for(j=0;j<actual->nodes;j++){
+                network[actual->node_list[j]].source=OTHER_SOURCE;
+                network[actual->node_list[j]].appid=actual->id;
             }
             //load_app
             while(fgets(buffer, 512, fd) != NULL) {
@@ -1032,7 +1037,6 @@ void apx_traces(){
                             ev.pid = actual->node_list[dest]; //Destination node
                             actual->ini_clock = sim_clock;
                             ins_event(&network[i].events, ev);
-                            network[i].source=OTHER_SOURCE;
                             network[i].appid = actual->id;
                         }
                     }

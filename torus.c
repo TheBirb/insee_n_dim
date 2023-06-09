@@ -1,4 +1,3 @@
-
 /**
 * @file
 * @brief	The torus & mesh topologies tools.

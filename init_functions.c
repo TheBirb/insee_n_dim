@@ -76,7 +76,7 @@ void init_functions (void) {
 
     if (plevel & 4){
         if (topo<DIRECT)
-            max_dst = NUMNODES-2;
+            max_dst = nodes_x+nodes_y+nodes_z-2;
         else if (topo<=CUBE)
             max_dst = nodes_x+nodes_y+nodes_z;
         else if (topo==DRAGONFLY_ABSOLUTE || topo==DRAGONFLY_RELATIVE || topo==DRAGONFLY_CIRCULANT || topo==DRAGONFLY_NAUTILUS || topo==DRAGONFLY_HELIX || topo==DRAGONFLY_OTHER)

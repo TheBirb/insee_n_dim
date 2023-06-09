@@ -510,6 +510,9 @@ void generate_pkt(long i) {
                             //change node source to FINISHED
                             network[i].source=FINISHED;
                             ////> change bitmap of app
+                            if(network[i].appid==0){
+                                printf("App 0 Node %d finished", i);
+                            }
                             set_bitmap(i, network[i].appid);
                             //Check if all nodes of app have finished in bitmap
                             //If all have been done we have to empty events and ocurred queues, then del app, and call apx_traces
@@ -526,6 +529,9 @@ void generate_pkt(long i) {
                         //change node source to FINISHED
                         network[i].source=FINISHED;
                         ////> change bitmap of app
+                        if(network[i].appid==0){
+                            printf("App 0 Node %d finished", i);
+                        }
                         set_bitmap(i, network[i].appid);
                         //Check if all nodes of app have finished in bitmap
                         //If all have been done we have to empty events and ocurred queues, then del app, and call apx_traces
@@ -564,12 +570,15 @@ void generate_pkt(long i) {
                                 d=e.pid;
                             }else if(event_empty(&network[i].events)){
                                 //change node source to FINISHED
+                                if(i==1566){
+                                    i=i;
+                                }
                                 network[i].source=FINISHED;
                                 ////> change bitmap of app
                                 set_bitmap(i, network[i].appid);
                                 //Check if all nodes of app have finished in bitmap
                                 //If all have been done we have to empty events and ocurred queues, then del app, and call apx_traces
-                                // to laod next app, if not continue
+                                // to load next app, if not continue
                                 if(check_finished_app(network[i].appid)==1){
                                     d_app(network[i].appid);
                                     apx_traces();

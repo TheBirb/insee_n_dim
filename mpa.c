@@ -14,7 +14,6 @@ void d_app(long id);
 appnode head;
 void set_bitmap(long node, long id);
 int check_finished_app(long id);
-
 /**
  *Functions to create app node
  * @return appnode
@@ -65,13 +64,15 @@ void d_app(long id){
     actual=head;
     int i;
     long temp;
-    actual->end_clock=sim_clock;
-    printf("App %s :Tiempo inicio:%lld, tiempo final: %lld\n", actual->filename,actual->ini_clock, actual->end_clock);
+
+
     if(head==NULL){
         panic("appmix: Error deleting node, list is empty!");
     }else{
         while(actual!=NULL){
             if(actual->id==id){
+                actual->end_clock=sim_clock;
+                printf("App %s with id %lld :Tiempo inicio:%lld, tiempo final: %lld\n",actual->filename, actual->id,actual->ini_clock, actual->end_clock);
                 break;
             }else{
                 prev=actual;
@@ -85,7 +86,7 @@ void d_app(long id){
 
                 temp = actual->node_list[i];
                 network[temp].source=INDEPENDENT_SOURCE;
-                network[temp].appid=-1;
+                network[temp].appid=0;
                 init_event(&network[temp].events);
                 init_occur(&network[temp].occurs);
             }
@@ -111,7 +112,7 @@ void d_app(long id){
 int check_node_disp(long *nodelist, long nodes){
     int i;
     for (i = 0;  i<nodes ; i++) {
-        if(network[nodelist[i]].source==OTHER_SOURCE){
+        if(network[nodelist[i]].source==OTHER_SOURCE || network[nodelist[i]].source==FINISHED){
           return 1;
         }
     }
@@ -133,6 +134,7 @@ void set_bitmap(long node, long id){
             actual=actual->next;
         }
     }
+
     for(i=0; i<actual->nodes; i++){
         if(actual->node_list[i]==node){
             actual->node_bmp[i]=1;
